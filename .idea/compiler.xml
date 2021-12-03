@@ -6,9 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="j2eelab4" />
         <module name="client" />
         <module name="server" />
+        <module name="multi-server" />
         <module name="common" />
       </profile>
     </annotationProcessing>
@@ -16,6 +16,7 @@
       <module name="client" target="11.0.12" />
       <module name="common" target="11" />
       <module name="j2eelab4" target="11" />
+      <module name="multi-server" target="11" />
       <module name="server" target="11" />
     </bytecodeTargetLevel>
   </component>

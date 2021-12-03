@@ -1,5 +1,6 @@
 package service;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -9,16 +10,28 @@ import model.Transport;
 import utils.Utils;
 
 public class Server {
-  public static void main(String[] args) throws IOException, ClassNotFoundException {
-    ServerSocket ss = new ServerSocket(7777);
+  public static void main(String[] args) throws ClassNotFoundException {
+    try (ServerSocket server = new ServerSocket(7779)) {
+      while (true) {
 
-    Socket socket = ss.accept();
+        Socket client = server.accept();
 
-    InputStream inputStream = socket.getInputStream();
-    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-    Transport[] transports = (Transport[]) objectInputStream.readObject();
-    Utils.countAverage()
-    ss.close();
-    socket.close();
+        try (DataOutputStream out = new DataOutputStream(client.getOutputStream());
+            InputStream inputStream = client.getInputStream()) {
+          ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+          Transport[] transports = (Transport[]) objectInputStream.readObject();
+          out.writeDouble(Utils.countAverage(transports));
+          out.flush();
+          out.close();
+          client.close();
+
+        } catch (IOException e) {
+          e.printStackTrace();
+          server.close();
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

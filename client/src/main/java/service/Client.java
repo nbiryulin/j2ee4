@@ -1,11 +1,9 @@
 package service;
 
 import exceptions.DuplicateModelNameException;
-import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -13,7 +11,7 @@ import java.net.UnknownHostException;
 import model.Car;
 import model.Transport;
 
-public class TestAsClient {
+public class Client {
 
 
   public static void main(String[] args) throws InterruptedException, DuplicateModelNameException {
@@ -32,9 +30,14 @@ public class TestAsClient {
     transports[1] = transport2;
 
     try (Socket socket = new Socket("localhost", 7777);
+        InputStream inputStream = socket.getInputStream();
         OutputStream outputStream = socket.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        //BufferedReader reader = new DataInputStream()r(new InputStreamReader(inputStream));
+        DataInputStream reader = new DataInputStream(inputStream);
+    ) {
       objectOutputStream.writeObject(transports);
+      System.out.println(reader.readDouble());
     } catch (UnknownHostException e) {
       System.out.println("Server is not responding");
     } catch (IOException e) {

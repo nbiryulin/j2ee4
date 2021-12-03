@@ -80,6 +80,14 @@ public class Car implements Transport, Serializable {
 
     }
 
+    @Override
+    public String toString() {
+        return "Car{" +
+            "mark='" + mark + '\'' +
+            ", models=" + Arrays.toString(models) +
+            '}';
+    }
+
     public Map<String, Double> getModelsMap() {
         if (getModelsLength() == 0) {
             return new HashMap<>();
@@ -140,6 +148,14 @@ public class Car implements Transport, Serializable {
 
     static class Model implements Serializable {
         private String name;
+
+        @Override
+        public String toString() {
+            return "Model{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+        }
 
         public double getPrice() {
             return price;

@@ -15,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import model.Car;
 import model.Moto;
@@ -31,8 +33,11 @@ public class Utils {
     }
 
     public static double countAverage(Transport[] transports) {
-        List<Double> prices = Arrays.stream(transports).map(Utils::countAverage).collect(Collectors.toList());
-        return prices.forEach(Double::sum);
+        OptionalDouble prices = Arrays
+            .stream(transports)
+            .flatMapToDouble(v -> Arrays.stream(v.getPrices()))
+            .average();
+        return prices.orElse(0);
     }
 
     public static void printNames(Transport transport) {
